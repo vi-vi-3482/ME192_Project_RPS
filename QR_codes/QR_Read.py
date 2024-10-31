@@ -23,7 +23,7 @@ def angle_from_centroid(point):
     return math.atan2(y - centroid_y, x - centroid_x)
 
 centres = sorted(centres, key=angle_from_centroid)
-centres = np.array([centres])
+centres = np.array([centres], dtype=np.float32)
 
 #%%
 cv2.polylines(image, centres, isClosed=True, color=(0, 255, 0), thickness=2)
@@ -33,3 +33,17 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 #%%
+width, height = 500, 500
+dst_points = np.array([
+    (0, 0),
+    (width - 1, 0),
+    (width - 1, height - 1),
+    (0, height - 1)
+], dtype=np.float32)
+matrix = cv2.getPerspectiveTransform(centres, dst_points)
+
+warped_image = cv2.warpPerspective(image, matrix, (width, height))
+
+cv2.imshow("Image", warped_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
