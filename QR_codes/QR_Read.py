@@ -26,13 +26,6 @@ centres = sorted(centres, key=angle_from_centroid)
 centres = np.array([centres], dtype=np.float32)
 
 #%%
-cv2.polylines(image, centres, isClosed=True, color=(0, 255, 0), thickness=2)
-
-cv2.imshow("Image", image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-
-#%%
 width, height = 500, 500
 dst_points = np.array([
     (0, 0),
