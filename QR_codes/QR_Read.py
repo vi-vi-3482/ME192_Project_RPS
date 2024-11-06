@@ -132,8 +132,28 @@ def map_centres(centres, matrix):
 
     transformed_point = cv2.perspectiveTransform(centres, matrix)
 
-    return centres, transformed_point
+    return transformed_point
 
+def run_camera(display=False):
+    cam = WebcamStream(display=display)
+    cam.run()
+
+def detect(cam):
+    image = cam.frame_queue.get()
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+    decoded, detected = read_qr_code(image)
+
+    print(decoded)
+
+    sorted_qr_codes = sort_codes(decoded, detected, qr_strings)
+
+    plane_edges = centres_of_qr([item[1] for item in sorted_qr_codes['grid_corners']])
+    transform_matrix, transform_image = perspective_transform(plane_edges, image)
+
+    blocks = [Blocks(item[0], item[1], transform_matrix) for item in sorted_qr_codes['rps_blocks']]
+
+    return blocks
 
 def main():
 
