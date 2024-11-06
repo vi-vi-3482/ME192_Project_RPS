@@ -2,7 +2,9 @@ import math
 from qreader import QReader
 import cv2
 import numpy as np
-
+import threading as th
+import multiprocessing as mp
+import queue
 
 grid_corners = ["(0, 0)", "(1, 0)", "(0, 1)", "(1, 1)"]
 rps_blocks = ("rock_block", "paper_block", "scissor_block")
@@ -32,49 +34,81 @@ def get_image(capture):
     result, image = capture.read()
     return image
 
-import cv2
-import threading
-import time
-
 class WebcamStream:
     def __init__(self, src=0, display=False):
         self.capture = cv2.VideoCapture(src)
+        if not self.capture.isOpened():
+            raise ValueError("Error: Could not open webcam.")
         self.result, self.frame = self.capture.read()
         self.stopped = False
         self.display = display
+        self.frame_queue = mp.Queue(maxsize=1)
 
     def start(self):
-        threading.Thread(target=self.update, daemon=True).start()
-        return self
+        # Start the frame capture in a separate process
+        self.capture_process = mp.Process(target=self.update)
+        self.capture_process.start()
 
     def update(self):
         while not self.stopped:
             if self.capture.isOpened():
                 self.result, self.frame = self.capture.read()
+                if not self.frame_queue.full():
+                    self.frame_queue.put(self.frame)
 
     def stop(self):
         self.stopped = True
-        cv2.destroyAllWindows()
+        self.capture_process.terminate()
         self.capture.release()
 
     def show_camera(self):
         while not self.stopped:
-            cv2.imshow("webcam", self.frame)
+            frame = self.frame_queue.get()
+            cv2.imshow("webcam", frame)
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 self.stop()
 
     def run(self):
         self.start()
-
         if self.display:
-            threading.Thread(target=self.show_camera, daemon=True).start()
-
+            # Start the show_camera process
+            self.display_process = mp.Process(target=self.show_camera)
+            self.display_process.start()
 
 def main():
-    capture = cv2.VideoCapture(0)
 
-    image = cv2.cvtColor(get_image(capture), cv2.COLOR_BGR2RGB)  # change this to absolute path
-    decoded, detected = read_qr_code(image)
+    cam = WebcamStream(display=True)
+    cam.run()
+
+    while True:
+        image = cam.frame_queue.get()
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+        decoded, detected = read_qr_code(image)
+
+        print(decoded)
+
+        sorted_qr_codes = sort_codes(decoded, detected, qr_strings)
+
+
+
+if __name__ == "__main__":
+    main()
+
+def main():
+
+    cam = WebcamStream(display=True)
+    cam.run()
+
+    while True:
+        image = cam.frame_queue.get()
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+        decoded, detected = read_qr_code(image)
+
+        print(decoded)
+
+        time.sleep(1)
 
     sorted_qr_codes = sort_codes(decoded, detected, qr_strings)
 
