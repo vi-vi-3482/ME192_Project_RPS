@@ -106,7 +106,7 @@ def centres_of_qr(detected):
 
     return centres
 
-def perspective_transform(centres):
+def perspective_transform(centres, image):
     width, height = 500, 500
     dst_points = np.array([
         (0, 0),
@@ -148,11 +148,10 @@ def main():
 
         print(decoded)
 
-
         sorted_qr_codes = sort_codes(decoded, detected, qr_strings)
 
         plane_edges = centres_of_qr([item[1] for item in sorted_qr_codes['grid_corners']])
-        transform_matrix, transform_image = perspective_transform(plane_edges)
+        transform_matrix, transform_image = perspective_transform(plane_edges, image)
 
         blocks = [Blocks(item[0], item[1], transform_matrix) for item in sorted_qr_codes['rps_blocks']]
 
