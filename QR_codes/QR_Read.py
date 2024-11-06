@@ -2,9 +2,7 @@ import math
 from qreader import QReader
 import cv2
 import numpy as np
-import threading as th
 import multiprocessing as mp
-import queue
 
 grid_corners = ["(0, 0)", "(1, 0)", "(0, 1)", "(1, 1)"]
 rps_blocks = ("rock_block", "paper_block", "scissor_block")
@@ -74,21 +72,6 @@ class WebcamStream:
             # Start the show_camera process
             self.display_process = mp.Process(target=self.show_camera)
             self.display_process.start()
-
-def main():
-
-    cam = WebcamStream(display=True)
-    cam.run()
-
-    while True:
-        image = cam.frame_queue.get()
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-        decoded, detected = read_qr_code(image)
-
-        print(decoded)
-
-        sorted_qr_codes = sort_codes(decoded, detected, qr_strings)
 
 def centres_of_qr(detected):
     centres = [cord["cxcy"] for cord in detected]
