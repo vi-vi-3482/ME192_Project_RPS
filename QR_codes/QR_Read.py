@@ -16,7 +16,6 @@ def read_qr_code(image):
 
     return decoded, detected
 
-
 def sort_codes(decoded, detected, qr_strings):
     qr_codes = {}
     for name, categories in zip(['grid_corners', 'rps_blocks', 'rps_cards'], qr_strings):
@@ -29,8 +28,52 @@ def sort_codes(decoded, detected, qr_strings):
 
     return qr_codes
 
+def get_image(capture):
+    result, image = capture.read()
+    return image
+
+import cv2
+import threading
+import time
+
+class WebcamStream:
+    def __init__(self, src=0, display=False):
+        self.capture = cv2.VideoCapture(src)
+        self.result, self.frame = self.capture.read()
+        self.stopped = False
+        self.display = display
+
+    def start(self):
+        threading.Thread(target=self.update, daemon=True).start()
+        return self
+
+    def update(self):
+        while not self.stopped:
+            if self.capture.isOpened():
+                self.result, self.frame = self.capture.read()
+
+    def stop(self):
+        self.stopped = True
+        cv2.destroyAllWindows()
+        self.capture.release()
+
+    def show_camera(self):
+        while not self.stopped:
+            cv2.imshow("webcam", self.frame)
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                self.stop()
+
+    def run(self):
+        self.start()
+
+        if self.display:
+            threading.Thread(target=self.show_camera, daemon=True).start()
+
+
 def main():
-    image = cv2.cvtColor(cv2.imread("QR_codes/corner test for transform.png"), cv2.COLOR_BGR2RGB)  # change this to absolute path
+    capture = cv2.VideoCapture(0)
+
+    image = cv2.cvtColor(get_image(capture), cv2.COLOR_BGR2RGB)  # change this to absolute path
     decoded, detected = read_qr_code(image)
 
     sorted_qr_codes = sort_codes(decoded, detected, qr_strings)
@@ -78,3 +121,54 @@ warped_image = cv2.warpPerspective(image, matrix, (width, height))
 cv2.imshow("Image", warped_image)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
+
+#%%
+import cv2
+capture = cv2.VideoCapture(0)
+result, image = capture.read()
+
+cv2.imshow("name",image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+#%%
+import cv2
+import threading
+import time
+
+class WebcamStream:
+    def __init__(self, src=0, display=False):
+        self.capture = cv2.VideoCapture(src)
+        self.result, self.frame = self.capture.read()
+        self.stopped = False
+        self.display = display
+
+    def start(self):
+        threading.Thread(target=self.update, daemon=True).start()
+        return self
+
+    def update(self):
+        while not self.stopped:
+            if self.capture.isOpened():
+                self.result, self.frame = self.capture.read()
+
+    def stop(self):
+        self.stopped = True
+        cv2.destroyAllWindows()
+        self.capture.release()
+
+    def show_camera(self):
+        while not self.stopped:
+            cv2.imshow("webcam", self.frame)
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                self.stop()
+
+    def run(self):
+        self.start()
+
+        if self.display:
+            threading.Thread(target=self.show_camera, daemon=True).start()
+
+
+cam = WebcamStream(display=True)
+cam.run()
