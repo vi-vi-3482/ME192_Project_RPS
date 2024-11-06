@@ -25,7 +25,7 @@ def sort_codes(decoded, detected, qr_strings):
         for item in categories:
             if item in decoded:
                 index = decoded.index(item)
-                matched.append((item, detected[index]))
+                matched.append([item, detected[index]])
         qr_codes[name] = matched
 
     return qr_codes
@@ -120,8 +120,20 @@ def perspective_transform(centres):
 
     return matrix, warped_image
 
-if __name__ == "__main__":
-    main()
+class Blocks:
+    def __init__(self, decoded, detected, matrix):
+        self.block_name = decoded
+        self.block_data = detected
+        self.centre = centres_of_qr(detected)
+        self.mapped_centre = map_centres(self.centre, matrix)
+
+def map_centres(centres, matrix):
+    centres = np.array(centres, dtype=np.float32)
+
+    transformed_point = cv2.perspectiveTransform(centres, matrix)
+
+    return centres, transformed_point
+
 
 def main():
 
@@ -139,15 +151,10 @@ def main():
 
         sorted_qr_codes = sort_codes(decoded, detected, qr_strings)
 
-        print(sorted_qr_codes)
-
-        plane_edges = centres_of_qr(sorted_qr_codes["grid_corners"][1])
-
+        plane_edges = centres_of_qr([item[1] for item in sorted_qr_codes['grid_corners']])
         transform_matrix, transform_image = perspective_transform(plane_edges)
 
-        cv2.imshow("warped", transform_image)
-
-
+        blocks = [Blocks(item[0], item[1], transform_matrix) for item in sorted_qr_codes['rps_blocks']]
 
 if __name__ == "__main__":
     main()
