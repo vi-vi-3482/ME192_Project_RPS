@@ -3,6 +3,44 @@ from qreader import QReader
 import cv2
 import numpy as np
 
+
+grid_corners = ["(0, 0)", "(1, 0)", "(0, 1)", "(1, 1)"]
+rps_blocks = ("rock_block", "paper_block", "scissor_block")
+rps_cards = ("rock_card", "paper_card", "scissor_card")
+
+qr_strings = [grid_corners, rps_blocks, rps_cards]
+
+def read_qr_code(image):
+    qreader = QReader()
+    decoded, detected = qreader.detect_and_decode(image, return_detections=True)
+
+    return decoded, detected
+
+
+def sort_codes(decoded, detected, qr_strings):
+    qr_codes = {}
+    for name, categories in zip(['grid_corners', 'rps_blocks', 'rps_cards'], qr_strings):
+        matched = []
+        for item in categories:
+            if item in decoded:
+                index = decoded.index(item)
+                matched.append((item, detected[index]))
+        qr_codes[name] = matched
+
+    return qr_codes
+
+def main():
+    image = cv2.cvtColor(cv2.imread("QR_codes/corner test for transform.png"), cv2.COLOR_BGR2RGB)  # change this to absolute path
+    decoded, detected = read_qr_code(image)
+
+    sorted_qr_codes = sort_codes(decoded, detected, qr_strings)
+
+    print(sorted_qr_codes)
+
+if __name__ == "__main__":
+    main()
+
+exit()
 #%%
 qreader = QReader()
 image = cv2.cvtColor(cv2.imread("QR_codes/corner test for transform.png"), cv2.COLOR_BGR2RGB)  # change this to absolute path
