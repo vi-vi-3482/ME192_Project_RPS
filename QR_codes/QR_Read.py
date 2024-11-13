@@ -74,7 +74,10 @@ class WebcamStream:
             self.display_process.start()
 
 def centres_of_qr(detected):
-    centres = [cord["cxcy"] for cord in detected]
+    centres = []
+    for i, v in enumerate(detected):
+        centres.append(v['cxcy'])
+
     centres = [(int(round(x)), int(round(y))) for x, y in centres]
 
     centroid_x = sum(x for x, y in centres) / len(centres)
@@ -107,7 +110,7 @@ class Blocks:
     def __init__(self, decoded, detected, matrix):
         self.block_name = decoded
         self.block_data = detected
-        self.centre = centres_of_qr(detected)
+        self.centre = centres_of_qr([self.block_data])
         self.mapped_centre = map_centres(self.centre, matrix)
 
 def map_centres(centres, matrix):
@@ -140,23 +143,33 @@ def detect(cam):
 
 def main():
 
-    cam = WebcamStream(display=True)
+    cam = WebcamStream(display=True, src=4)
     cam.run()
 
     while True:
-        image = cam.frame_queue.get()
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        while True:
+            image = cam.frame_queue.get()
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        decoded, detected = read_qr_code(image)
+            decoded, detected = read_qr_code(image)
 
-        print(decoded)
+            # print(decoded)
 
-        sorted_qr_codes = sort_codes(decoded, detected, qr_strings)
+            sorted_qr_codes = sort_codes(decoded, detected, qr_strings)
+            if len(sorted_qr_codes['grid_corners']) == 4 :
+                break
 
-        plane_edges = centres_of_qr([item[1] for item in sorted_qr_codes['grid_corners']])
+        try:
+            plane_edges = centres_of_qr([item[1] for item in sorted_qr_codes['grid_corners']])
+        except:
+            continue
         transform_matrix, transform_image = perspective_transform(plane_edges, image)
+        if len(sorted_qr_codes['rps_blocks']) >= 0 :
+            blocks = [Blocks(item[0], item[1], transform_matrix) for item in sorted_qr_codes['rps_blocks']]
 
-        blocks = [Blocks(item[0], item[1], transform_matrix) for item in sorted_qr_codes['rps_blocks']]
+        for block in blocks:
+            print(block.block_name)
+            print(block.mapped_centre)
 
 if __name__ == "__main__":
     main()
