@@ -113,6 +113,13 @@ class Blocks:
         self.centre = centres_of_qr([self.block_data])
         self.mapped_centre = map_centres(self.centre, matrix)
 
+class Cards:
+    def __init__(self, decoded, detected, matrix):
+        self.card_name = decoded
+        self.card_data = detected
+        self.centre = centres_of_qr([self.card_data])
+        self.mapped_centre = map_centres(self.centre, matrix)
+
 def map_centres(centres, matrix):
     centres = np.array(centres, dtype=np.float32)
 
@@ -166,10 +173,15 @@ def main():
         transform_matrix, transform_image = perspective_transform(plane_edges, image)
         if len(sorted_qr_codes['rps_blocks']) >= 0 :
             blocks = [Blocks(item[0], item[1], transform_matrix) for item in sorted_qr_codes['rps_blocks']]
-
         for block in blocks:
             print(block.block_name)
             print(block.mapped_centre)
+
+        if len(sorted_qr_codes['rps_cards']) >= 0 :
+            cards = [Cards(item[0], item[1], transform_matrix) for item in sorted_qr_codes['rps_cards']]
+            for card in cards:
+                print(card.card_name)
+                print(card.mapped_centre)
 
 if __name__ == "__main__":
     main()
