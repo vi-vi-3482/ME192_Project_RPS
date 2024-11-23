@@ -2,6 +2,7 @@ from QR_codes.QR_Read import *
 from rps_logic import *
 import logging
 import franka_python
+aimport cv2
 
 def main():
     cam = WebcamStream(display=True, src=4)
