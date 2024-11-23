@@ -93,7 +93,7 @@ def centres_of_qr(detected):
     return centres
 
 def perspective_transform(centres, image):
-    width, height = 500, 500
+    width, height = 1000, 1000  # these need to be set to match the franka workspace
     dst_points = np.array([
         (0, 0),
         (width - 1, 0),
