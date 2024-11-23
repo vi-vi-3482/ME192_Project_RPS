@@ -1,6 +1,6 @@
 
 
-def match_case(read_card):
+def match_card(read_card):
     to_play = None  # default value in case reading fails, this can be used to raise an error later
     match read_card:
         case "rock_card":
@@ -18,7 +18,7 @@ def match_case(read_card):
 
 
 def main():
-    match_case("scissors_card")
+    match_card("scissors_card")
 
 if __name__ == "__main__":
     main()
