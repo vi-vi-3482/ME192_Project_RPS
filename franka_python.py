@@ -21,40 +21,40 @@ class RobotControl:
 
 
         input("press enter to start")
-        self.panda.move_to_start()
-        pose = self.panda.get_pose()
+        panda.move_to_start()
+        pose = panda.get_pose()
         pose[0, 3] += .3
         pose[1, 3] -= .3
-        self.panda.move_to_pose(pose)
+        panda.move_to_pose(pose)
         pose[2, 3] -= .47
-        self.panda.move_to_pose(pose)
+        panda.move_to_pose(pose)
         input("press enter to continue")
 
-        self.panda.move_to_start()
-        pose = self.panda.get_pose()
+        panda.move_to_start()
+        pose = panda.get_pose()
         pose[0, 3] += .3
         pose[1, 3] += .3
-        self.panda.move_to_pose(pose)
+        panda.move_to_pose(pose)
         pose[2, 3] -= .47
-        self.panda.move_to_pose(pose)
+        panda.move_to_pose(pose)
         input("press enter to continue")
 
-        self.panda.move_to_start()
-        pose = self.panda.get_pose()
+        panda.move_to_start()
+        pose = panda.get_pose()
         pose[0, 3] -= .3
         pose[1, 3] -= .3
-        self.panda.move_to_pose(pose)
+        panda.move_to_pose(pose)
         pose[2, 3] -= .47
-        self.panda.move_to_pose(pose)
+        panda.move_to_pose(pose)
         input("press enter to continue")
 
-        self.panda.move_to_start()
-        pose = self.panda.get_pose()
+        panda.move_to_start()
+        pose = panda.get_pose()
         pose[0, 3] -= .3
         pose[1, 3] += .3
-        self.panda.move_to_pose(pose)
+        panda.move_to_pose(pose)
         pose[2, 3] -= .47
-        self.panda.move_to_pose(pose)
+        panda.move_to_pose(pose)
         input("press enter to continue")
 
         return desk, panda, gripper
