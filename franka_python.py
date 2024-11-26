@@ -75,33 +75,35 @@ class RobotControl:
         :param y:
         :return:
         """
-        """
-        bx = x*Bx/Ax
-        by = y*By/Ay
-        
-        return to start()
-        pose = get pose
-        
-        adjust position x,y
-        move to position()
-        adjust position drop z
-        move to position()
-        gripper activate()
-        
-        return to start()
-        pose = get pose
-        
-        **set position every time for target playing location, cx, cy fixed locations
-        
-        adjust position x,y ** by cx, cy
-        move to position()
-        adjust position drop z
-        move to position()
-        gripper move() (release) function
-        
-        return to start()
-        pose = get pose
-        """
+
+        # bx = x * Bx / Ax
+        # by = y * By / Ay
+
+        # First, move and pick up
+        self.panda.move_to_start()
+        pose = self.panda.get_pose()
+        self.panda.move_to_pose(pose)
+        # Do the math to convert to franka x and y
+        pose[0,3] += x  # front/back
+        pose[1,3] -= y #left/right
+        self.panda.move_to_pose(pose)
+        pose[2,3] -= .46 #up/down
+        self.panda.move_to_pose(pose)
+        self.gripper.grasp(0, 0.2, 10, 0.04, 0.04)
+
+        # Now move and place. Need Permanent Target Coordinates
+        self.panda.move_to_start()
+        pose = self.panda.get_pose()
+        # pose[0, 3] += x  # front/back
+        # pose[1, 3] -= y  # left/right
+        self.panda.move_to_pose(pose)
+        pose[2, 3] -= .46  # up/down
+        self.panda.move_to_pose(pose)
+        self.gripper.move(0.08, 0.2)
+
+        self.panda.move_to_start()
+        pose = self.panda.get_pose()
+
         pass
 
 def main():
