@@ -19,13 +19,7 @@ class RobotControl:
         panda = panda_py.Panda(hostname)
         gripper = libfranka.Gripper(hostname)
 
-        return desk, panda, gripper
 
-    def calibrate(self):
-        """
-        Touches the franka end factor to the four corners of the workspace. QR codes will be placed at each point
-        :return:
-        """
         input("press enter to start")
         self.panda.move_to_start()
         pose = self.panda.get_pose()
@@ -63,7 +57,8 @@ class RobotControl:
         self.panda.move_to_pose(pose)
         input("press enter to continue")
 
-        return
+        return desk, panda, gripper
+
 
     def pick_place(self, x, y):
         """
@@ -111,7 +106,6 @@ class RobotControl:
 def main():
     print("start")
     robot = RobotControl()
-    robot.calibrate()
     print("end")
 
 if __name__ == '__main__':
