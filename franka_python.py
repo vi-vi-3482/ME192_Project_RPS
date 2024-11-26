@@ -108,5 +108,10 @@ class RobotControl:
         pass
 
 def main():
+    print("start")
     robot = RobotControl()
     robot.calibrate()
+    print("end")
+
+if __name__ == '__main__':
+    main()
