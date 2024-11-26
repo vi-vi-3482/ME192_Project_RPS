@@ -46,7 +46,7 @@ class RobotControl:
 
         self.panda.move_to_start()
         pose = self.panda.get_pose()
-        pose[0, 3] -= .1
+        pose[0, 3] -= .3
         pose[1, 3] -= .3
         self.panda.move_to_pose(pose)
         pose[2, 3] -= .47
@@ -55,7 +55,7 @@ class RobotControl:
 
         self.panda.move_to_start()
         pose = self.panda.get_pose()
-        pose[0, 3] -= .1
+        pose[0, 3] -= .3
         pose[1, 3] += .3
         self.panda.move_to_pose(pose)
         pose[2, 3] -= .47
@@ -78,14 +78,15 @@ class RobotControl:
 
         # bx = x * Bx / Ax
         # by = y * By / Ay
-
+        franka_x = ((x - 500) / 500) * .3
+        franka_y = ((y - 500) / 500) * .3
         # First, move and pick up
         self.panda.move_to_start()
         pose = self.panda.get_pose()
         self.panda.move_to_pose(pose)
         # Do the math to convert to franka x and y
-        pose[0,3] += x  # front/back
-        pose[1,3] -= y #left/right
+        pose[0,3] += franka_x  # front/back
+        pose[1,3] -= franka_y #left/right
         self.panda.move_to_pose(pose)
         pose[2,3] -= .46 #up/down
         self.panda.move_to_pose(pose)
