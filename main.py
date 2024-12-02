@@ -5,7 +5,7 @@ import franka_python
 import cv2
 
 def main():
-    cam = WebcamStream(display=True, src=4)
+    cam = WebcamStream(display=True, src=0)
     cam.run()
 
     contoller = franka_python.RobotControl()
