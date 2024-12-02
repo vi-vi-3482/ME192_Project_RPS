@@ -4,8 +4,10 @@ import logging
 
 # Panda hostname/IP and Desk login information of your robot
 hostname = '10.31.82.199'
-username = 'student.admin'
-password = 'franka1admin'
+# username = 'student.admin'
+# password = 'franka1admin'
+username = 'student.operator'
+password = 'frankarobot1'
 logging.basicConfig(level=logging.INFO)
 
 class RobotControl:
