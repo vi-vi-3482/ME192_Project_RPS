@@ -33,36 +33,36 @@ class RobotControl:
         pose = self.panda.get_pose()
         pose[0, 3] += .3
         pose[1, 3] -= .2
-        self.panda.move_to_pose(pose,speed_factor=0.07)
+        self.panda.move_to_pose(pose,speed_factor=0.05)
         pose[2, 3] -= .46
-        self.panda.move_to_pose(pose,speed_factor=0.07)
+        self.panda.move_to_pose(pose,speed_factor=0.05)
         input("press enter to continue")
 
         self.panda.move_to_start()
         pose = self.panda.get_pose()
         pose[0, 3] += .3
         pose[1, 3] += .2
-        self.panda.move_to_pose(pose,speed_factor=0.07)
+        self.panda.move_to_pose(pose,speed_factor=0.05)
         pose[2, 3] -= .46
-        self.panda.move_to_pose(pose,speed_factor=0.07)
+        self.panda.move_to_pose(pose,speed_factor=0.05)
         input("press enter to continue")
 
         self.panda.move_to_start()
         pose = self.panda.get_pose()
-        pose[0, 3] -= .1
+        #pose[0, 3] -= .1
         pose[1, 3] -= .2
-        self.panda.move_to_pose(pose,speed_factor=0.07)
+        self.panda.move_to_pose(pose,speed_factor=0.05)
         pose[2, 3] -= .46
-        self.panda.move_to_pose(pose,speed_factor=0.07)
+        self.panda.move_to_pose(pose,speed_factor=0.05)
         input("press enter to continue")
 
         self.panda.move_to_start()
         pose = self.panda.get_pose()
-        pose[0, 3] -= .1
+        #pose[0, 3] -= .1
         pose[1, 3] += .2
-        self.panda.move_to_pose(pose,speed_factor=0.07)
+        self.panda.move_to_pose(pose,speed_factor=0.05)
         pose[2, 3] -= .46
-        self.panda.move_to_pose(pose,speed_factor=0.07)
+        self.panda.move_to_pose(pose,speed_factor=0.05)
         input("press enter to continue")
 
         return
