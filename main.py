@@ -53,10 +53,10 @@ def main():
             for b in blocks:
                 if b.block_name == to_play:
                     block = b
-
-            block_cord = [int(x) for x in block.mapped_centre.flatten()]
-            print(block_cord)
-            contoller.pick_place(*block.mapped_centre)
+            if block != None:
+                block_cord = [int(x) for x in block.mapped_centre.flatten()]
+                print(block_cord)
+                contoller.pick_place(*block.mapped_centre)
 
             print("complete")
             break

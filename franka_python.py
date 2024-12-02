@@ -6,6 +6,10 @@ import logging
 hostname = '10.31.82.199'
 # username = 'student.admin'
 # password = 'franka1admin'
+
+# username = 'student.safety'
+# password = 'besafestudent'
+
 username = 'student.operator'
 password = 'frankarobot1'
 logging.basicConfig(level=logging.INFO)
