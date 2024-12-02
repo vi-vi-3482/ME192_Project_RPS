@@ -33,36 +33,36 @@ class RobotControl:
         pose = self.panda.get_pose()
         pose[0, 3] += .4
         pose[1, 3] -= .15
-        self.panda.move_to_pose(pose,speed_factor=0.05)
+        self.panda.move_to_pose(pose,speed_factor=0.08)
         pose[2, 3] -= .46
-        self.panda.move_to_pose(pose,speed_factor=0.05)
+        self.panda.move_to_pose(pose,speed_factor=0.08)
         input("press enter to continue")
 
         self.panda.move_to_start()
         pose = self.panda.get_pose()
         pose[0, 3] += .4
         pose[1, 3] += .15
-        self.panda.move_to_pose(pose,speed_factor=0.05)
+        self.panda.move_to_pose(pose,speed_factor=0.08)
         pose[2, 3] -= .46
-        self.panda.move_to_pose(pose,speed_factor=0.05)
+        self.panda.move_to_pose(pose,speed_factor=0.08)
         input("press enter to continue")
 
         self.panda.move_to_start()
         pose = self.panda.get_pose()
         pose[0, 3] += .1
         pose[1, 3] -= .15
-        self.panda.move_to_pose(pose,speed_factor=0.05)
+        self.panda.move_to_pose(pose,speed_factor=0.08)
         pose[2, 3] -= .46
-        self.panda.move_to_pose(pose,speed_factor=0.05)
+        self.panda.move_to_pose(pose,speed_factor=0.08)
         input("press enter to continue")
 
         self.panda.move_to_start()
         pose = self.panda.get_pose()
         pose[0, 3] += .1
         pose[1, 3] += .15
-        self.panda.move_to_pose(pose,speed_factor=0.05)
+        self.panda.move_to_pose(pose,speed_factor=0.08)
         pose[2, 3] -= .46
-        self.panda.move_to_pose(pose,speed_factor=0.05)
+        self.panda.move_to_pose(pose,speed_factor=0.08)
         input("press enter to continue")
 
         self.panda.move_to_start()
@@ -86,8 +86,8 @@ class RobotControl:
         # by = y * By / Ay
         #set up new x Range to -.1 to +.3 (subtract .1 from ratio value to shift centered coords)
         #set up new y Rance to -.2 to -.2
-        franka_x = (((x - 500) / 500) * .2)+.1
-        franka_y = ((y - 500) / 500) * .2
+        franka_x = (((x - 500) / 500) * .2)+.2
+        franka_y = ((y - 500) / 500) * .15
         # First, move and pick up
         self.panda.move_to_start()
         pose = self.panda.get_pose()
@@ -95,9 +95,9 @@ class RobotControl:
         # Do the math to convert to franka x and y
         pose[0,3] += franka_x  # front/back
         pose[1,3] -= franka_y #left/right
-        self.panda.move_to_pose(pose,speed_factor=0.07)
+        self.panda.move_to_pose(pose,speed_factor=0.08)
         pose[2,3] -= .47 #up/down
-        self.panda.move_to_pose(pose,speed_factor=0.07)
+        self.panda.move_to_pose(pose,speed_factor=0.08)
         self.gripper.grasp(0, 0.2, 10, 0.04, 0.04)
 
         # Now move and place. Need Permanent Target Coordinates
