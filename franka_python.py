@@ -32,7 +32,7 @@ class RobotControl:
         self.panda.move_to_start()
         pose = self.panda.get_pose()
         pose[0, 3] += .4
-        pose[1, 3] -= .2
+        pose[1, 3] -= .15
         self.panda.move_to_pose(pose,speed_factor=0.05)
         pose[2, 3] -= .46
         self.panda.move_to_pose(pose,speed_factor=0.05)
@@ -41,7 +41,7 @@ class RobotControl:
         self.panda.move_to_start()
         pose = self.panda.get_pose()
         pose[0, 3] += .4
-        pose[1, 3] += .2
+        pose[1, 3] += .15
         self.panda.move_to_pose(pose,speed_factor=0.05)
         pose[2, 3] -= .46
         self.panda.move_to_pose(pose,speed_factor=0.05)
@@ -50,7 +50,7 @@ class RobotControl:
         self.panda.move_to_start()
         pose = self.panda.get_pose()
         pose[0, 3] += .1
-        pose[1, 3] -= .2
+        pose[1, 3] -= .15
         self.panda.move_to_pose(pose,speed_factor=0.05)
         pose[2, 3] -= .46
         self.panda.move_to_pose(pose,speed_factor=0.05)
@@ -59,11 +59,14 @@ class RobotControl:
         self.panda.move_to_start()
         pose = self.panda.get_pose()
         pose[0, 3] += .1
-        pose[1, 3] += .2
+        pose[1, 3] += .15
         self.panda.move_to_pose(pose,speed_factor=0.05)
         pose[2, 3] -= .46
         self.panda.move_to_pose(pose,speed_factor=0.05)
         input("press enter to continue")
+
+        self.panda.move_to_start()
+        pose = self.panda.get_pose()
 
         return
 
@@ -93,7 +96,7 @@ class RobotControl:
         pose[0,3] += franka_x  # front/back
         pose[1,3] -= franka_y #left/right
         self.panda.move_to_pose(pose,speed_factor=0.07)
-        pose[2,3] -= .46 #up/down
+        pose[2,3] -= .47 #up/down
         self.panda.move_to_pose(pose,speed_factor=0.07)
         self.gripper.grasp(0, 0.2, 10, 0.04, 0.04)
 
@@ -103,7 +106,7 @@ class RobotControl:
         # pose[0, 3] += x  # front/back
         # pose[1, 3] -= y  # left/right
         self.panda.move_to_pose(pose,speed_factor=0.07)
-        pose[2, 3] -= .46  # up/down
+        pose[2, 3] -= .47  # up/down
         self.panda.move_to_pose(pose,speed_factor=0.07)
         self.gripper.move(0.08, 0.2)
 
