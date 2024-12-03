@@ -5,7 +5,7 @@ import franka_python
 import cv2
 
 def main():
-    cam = WebcamStream(display=True, src=0)
+    cam = WebcamStream(display=True, src=4)
     cam.run()
 
     contoller = franka_python.RobotControl()
@@ -28,12 +28,16 @@ def main():
         except:
             continue
         transform_matrix, transform_image = perspective_transform(plane_edges, image)
+        cv2.imwrite("_transformed.png", cv2.cvtColor(transform_image, cv2.COLOR_RGB2BGR))
+        cv2.imwrite("_original.png", cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
         if len(sorted_qr_codes['rps_blocks']) >= 0 :
             blocks = [Blocks(item[0], item[1], transform_matrix) for item in sorted_qr_codes['rps_blocks']]
 
-        for block in blocks:
-            print(block.block_name)
-            print(block.mapped_centre)
+            for block in blocks:
+                print(block.block_name)
+                print(block.mapped_centre)
+        else:
+            blocks = None
 
         if len(sorted_qr_codes['rps_cards']) >= 0:
             cards = [Cards(item[0], item[1], transform_matrix) for item in sorted_qr_codes['rps_cards']]
@@ -50,16 +54,18 @@ def main():
             to_play = match_card(card.card_name)
 
             block = None
-            for b in blocks:
-                if b.block_name == to_play:
-                    block = b
-            if block != None:
+
+            if blocks != None:
+                for b in blocks:
+                    if b.block_name == to_play:
+                        block = b
+
                 block_cord = [int(x) for x in block.mapped_centre.flatten()]
                 print(block_cord)
                 contoller.pick_place(*block.mapped_centre)
+                input("press enter to play again")
 
             print("complete")
-            break
 
         else:
             print("no or wrong number of cards played")
