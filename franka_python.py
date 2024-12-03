@@ -90,7 +90,7 @@ class RobotControl:
         # by = y * By / Ay
         #set up new x Range to -.1 to +.3 (subtract .1 from ratio value to shift centered coords)
         #set up new y Rance to -.2 to -.2
-        franka_x = (((x - 500) / 500) * .2)+.25
+        franka_x = (((x - 500) / 500) * .15) + .25
         franka_y = ((y - 500) / 500) * .15
         # First, move and pick up
         self.panda.move_to_start()
