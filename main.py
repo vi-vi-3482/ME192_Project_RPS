@@ -1,3 +1,7 @@
+# import pydevd_pycharm
+# pydevd_pycharm.settrace('localhost', port=5678, stdoutToServer=True, stderrToServer=True)
+
+
 from QR_codes.QR_Read import *
 from rps_logic import *
 import logging
@@ -5,7 +9,7 @@ import franka_python
 import cv2
 
 def main():
-    cam = WebcamStream(display=True, src=4)
+    cam = WebcamStream(display=True, src=0)
     cam.run()
 
     contoller = franka_python.RobotControl()
@@ -53,7 +57,7 @@ def main():
 
             to_play = match_card(card.card_name)
 
-            block = None
+            # block = None
 
             if blocks != None:
                 for b in blocks:
@@ -62,7 +66,8 @@ def main():
 
                 block_cord = [int(x) for x in block.mapped_centre.flatten()]
                 print(block_cord)
-                contoller.pick_place(*block.mapped_centre)
+                y, x = block_cord  # inverted x and y to match cord systems
+                contoller.pick_place(x, y)
                 input("press enter to play again")
 
             print("complete")
