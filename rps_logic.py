@@ -21,7 +21,7 @@ def match_card(read_card):
         to_play = "paper_block"
     elif read_card == "paper_card":
         to_play = "scissor_block"
-    elif read_card == "scissors_card":
+    elif read_card == "scissor_card":
         to_play = "rock_block"
     else:
         print("Invalid input")

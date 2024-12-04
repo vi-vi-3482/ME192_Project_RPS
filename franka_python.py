@@ -123,12 +123,13 @@ class RobotControl:
         print(pose)
         self.panda.move_to_pose(pose, speed_factor=0.08)
         # self.panda.move_to_joint_position(panda_py.ik(pose), speed_factor=0.08)
-        self.gripper.grasp(0, 0.2, 100, 0.02, 0.04)
+        self.gripper.grasp(0.06, 0.2, 15, 0.04, 0.04)
+        #self.gripper.move(0.0617, 0.2)
 
         # Now move and place. Need Permanent Target Coordinates
         self.panda.move_to_start()
         pose = self.panda.get_pose()
-        pose[0, 3] += 0.3  # front/back
+        pose[0, 3] += 0.4  # front/back
         pose[1, 3] += 0  # left/right
         self.panda.move_to_pose(pose, speed_factor=0.07)
         pose[2, 3] -= .47  # up/down
